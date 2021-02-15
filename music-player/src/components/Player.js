@@ -1,13 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faAngleLeft, faAngleRight, faPause } from '@fortawesome/free-solid-svg-icons';
 
-const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
-    const audioRef = useRef(null);
-    const [songInfo, setSongInfo] = useState({
-        currentTime: 0,
-        duration: 0
-    });
+const Player = ({ isPlaying, setIsPlaying, audioRef, songInfo, setSongInfo }) => {
 
     const playSongHandler = () => {
         if (isPlaying) {
@@ -27,16 +22,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
         return (
             Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
         );
-    }
-
-    const timeUpdateHandler = (event) => {
-        const currentTime = event.target.currentTime;
-        const duration = event.target.duration;
-
-        // when name of property in the state is the same as variable you are passing, you don't need to
-        // say duration: duration
-        // simple duration is enough cause it will know what you mean
-        setSongInfo({ ...songInfo, currentTime, duration });
     }
 
     const dragHandler = (event) => {
@@ -62,12 +47,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
                 <FontAwesomeIcon className="play" icon={playPauseIconHandler()} size="2x" onClick={playSongHandler} />
                 <FontAwesomeIcon className="skip-forward" icon={faAngleRight} size="2x" />
             </div>
-            <audio
-                onTimeUpdate={timeUpdateHandler}
-                ref={audioRef}
-                src={currentSong.audio}
-                onLoadedMetadata={timeUpdateHandler}
-            />
         </div>
     )
 }
